@@ -1,32 +1,86 @@
-# Prerequisites
-*.d
+# include <string>
+# include <cmath>
+# include <iostream>
+# include <vector>
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+using namespace std;
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
 
-# Fortran module files
-*.mod
-*.smod
+bool dels(int c, int n) {
+    vector <int> a(c);
+    int s = 0;
+    for (int i = 2; i < n; i++) {
+        if (n % i == 0) {
+            a[s] = i;
+            //cout << 'A' << i << endl;
+            s++;
+        }
+    }
+    vector <int> b(c);
+    for (int i = 0; i < c; i++) {
+        int d = 0;
+        for (int j = 0; j < c; j++) {
+            if (a[j] != '*') {
+                d = max(d, a[j]);
+                //cout << 'B' << j << endl;
+            }
+        }
+        b[i] = d;
+        //cout << 'C' << endl;
+        for (int j = 0; j < c; j++) {
+            if (a[j] == d) {
+                a[j] = '*';
+            }
+        }
+        //cout << 'D' << endl;
+    }
+    //cout << 'F' << endl;
+    int sum = 0;
+    bool Flag = true;
+    for (int i = 0; i < c; i++) {
+        if (b[i] + sum < n) {
+            sum += b[i];
+        }
+        if (b[i] + sum == n) {
+            return true;
+        }
+        if (b[i] + sum > n and Flag) {
+            Flag = false;
+            i++;
+            if (b[i] + sum == n) {
+                return true;
+            }
+        }
+        if (b[i] + sum < n and Flag == false) {
+            return false;
+        }
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+    }
+    a.clear();
+    b.clear();
+}
 
-# Executables
-*.exe
-*.out
-*.app
+int main() {
+    int s = 0;
+    for (int i = 300; i <= 350; i++) {
+        int c = 0, k = 0;
+        for (int j = 2; j < i; j++) {
+            if (i % j == 0) {
+                c++;
+                k += j;
+            }
+        }
+        if (dels(c, i) == true and k >= i) {
+            s++;
+            cout << i << " ->";
+            for (int j = 1; j < i; j++) {
+                if (i % j == 0) {
+                    cout << ' ' << j;
+                }
+            }
+            cout << endl;
+        }
+    }
+    cout << endl << s;
+}
